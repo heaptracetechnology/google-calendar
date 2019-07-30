@@ -7,10 +7,30 @@ An OMG service for google calender, it allows users to create and edit events. R
 
 ## Direct usage in [Storyscript](https://storyscript.io/):
 
-##### Event
+##### Create Calender
 ```coffee
-amplitude event userId:'abc@example.com' eventType:'event name' eventProperties:'{"property1":"one","property2":"two"}' userProperties:'{"Cohort":"Test A"}'appVersion:'1.0.0' platform:'ios' osName:'ios' osVersion:'0.13' deviceBrand:'iphone' deviceManufacturer:'Apple' deviceModel:'IPhone X' city:'Pune' country:'India' region:'India' dma:'India' language:'English' price:1590.5 quantity:1 revenue:1590.52 productId:'P123' revenueType:'refund' ip:'127.0.0.1'
-{"success": "true","message": "Event uploaded successfully","statusCode": 200}
+google-calender createCalender summary:'calender summary' description:'calender description' location:'geographic location'
+{"conferenceProperties": {"object"},"description": "calender description","etag": "etag","id": "calender Id","kind": "calendar#calendar","location": "geographic location","summary": "calender summary", "timeZone": "UTC"}
+```
+##### Create Event
+```coffee
+google-calender createEvent calenderId:'calender Id' summary:'Event summary' description:'Event description' location:'location' attendeesList:'["abc@example.com","xyz@example.com"]'startDate:'2019-08-02T12:00:00.000Z' endDate:'2019-08-02T16:00:00.000Z'
+{"attendees": ["attendees list"],"created": "2019-07-30T10:45:20.000Z","creator": {"creator details"},"description": "Event description","end": {"dateTime": "2019-08-02T16:00:00Z"},"etag": "etag","htmlLink": "htmlLink","iCalUID": "iCalUID","id": "event id","kind": "calendar#event","location": "Pune","organizer": {"organizer details"},"start": {"dateTime": "2019-08-02T12:00:00Z"},"status": "confirmed","summary": "Event summary","updated": "2019-07-30T10:45:20.628Z"}
+```
+##### Get Calender By ID
+```coffee
+google-calender getCalender calenderId:'calender Id'
+{"accessRole": "owner","backgroundColor": "#cca6ac","colorId": "21","conferenceProperties": {"object"},"description": "calender description","etag": "etag","id": "calender Id","kind": "calendar#calendar","location": "geographic location","summary": "calender summary", "timeZone": "UTC"}
+```
+##### Event List
+```coffee
+google-calender eventList
+{"etag": "etag",[{"accessRole": "owner","backgroundColor": "#cca6ac","colorId": "21","conferenceProperties": {"object"},"description": "calender description","etag": "etag","id": "calender Id","kind": "calendar#calendar","location": "geographic location","summary": "calender summary", "timeZone": "UTC"}] ,"kind": "calendar#calendarList", "nextPageToken": "nextPageToken"}
+```
+##### Get Event By ID
+```coffee
+google-calender getEvent calenderId:'calender Id' eventId:'event Id'
+{"attendees": ["attendees list"],"created": "2019-07-30T10:45:20.000Z","creator": {"creator details"},"description": "Event description","end": {"dateTime": "2019-08-02T16:00:00Z"},"etag": "etag","htmlLink": "htmlLink","iCalUID": "iCalUID","id": "event id","kind": "calendar#event","location": "Pune","organizer": {"organizer details"},"start": {"dateTime": "2019-08-02T12:00:00Z"},"status": "confirmed","summary": "Event summary","updated": "2019-07-30T10:45:20.628Z"}
 ```
 
 Curious to [learn more](https://docs.storyscript.io/)?
@@ -19,13 +39,30 @@ Curious to [learn more](https://docs.storyscript.io/)?
 
 ## Usage with [OMG CLI](https://www.npmjs.com/package/omg)
 
-##### Event
+##### Create Calender
 ```shell
-$ omg run event -a userId=<USER_ID> -a eventType=<EVENT_TYPE> -a eventProperties=<MAP_TYPE_EVENT_PROPERTIES> -a userProperties=<MAP_TYPE_USER_PROPERTIES> -a appVersion=<APP_VERSION> -a platform=<PLATFORM> -a osName=<OS_NAME> -a osVersion=<OS_VERSION> -a deviceBrand=<DEVICE_BRAND> -a deviceManufacturer=<DEVICE_MANUFACTURER> -a deviceModel=<DEVICE_MODEL> -a city=<USER_CITY> -a country=<USER_COUNTRY> -a region=<USER_REGION> -a dma=<DESIGNATED_MARKET_AREA> -a language=<USER_SELECTED_LANGUAGE> -a price=<ITEM_PRICE> -a quantity=<QUANTITY> -a revenue=<REVENUE> -a productId=<PRODUCT_ID> 
--a revenueType=<REVENUE_TYPE> -a ip=<IP_ADDRESS> -e API_KEY=<API_KEY>
+$ omg run createCalender -a summary=<SUMMARY> -a description=<DESCRIPTION> -a location=<LOCATION>  -e KEY=<BASE64_DATA_OF_JSON_KEY_FILE>
+```
+##### Create Event
+```shell
+$ omg run createEvent -a calenderId=<CALENDER_ID> -a summary=<SUMMARY> -a description=<DESCRIPTION> -a location=<LOCATION> -a attendeesList=<LIST_ATTENDEES_EMAIL_ADDRESS> -a startDate=<START_DATE> -a endDate=<END_DATE> -e KEY=<BASE64_DATA_OF_JSON_KEY_FILE>
+```
+**Note**: The Start and End date should be string in this "2006-01-02T15:04:05.000Z" format.
+##### Get Event By ID
+```shell
+$ omg run getCalender -a calenderId=<CALENDER_ID> -e KEY=<BASE64_DATA_OF_JSON_KEY_FILE>
+```
+##### Event List
+```shell
+$ omg run eventList -e KEY=<BASE64_DATA_OF_JSON_KEY_FILE>
+```
+##### Get Event By ID
+```shell
+$ omg run getEvent -a calenderId=<CALENDER_ID> -a eventId=<EVENT_ID> -e KEY=<BASE64_DATA_OF_JSON_KEY_FILE>
 ```
 
-**Note**: the OMG CLI requires [Docker](https://docs.docker.com/install/) to be installed.
+
+**Note**: The OMG CLI requires [Docker](https://docs.docker.com/install/) to be installed.
 
 ## License
-[MIT License](https://github.com/omg-services/amplitude/blob/master/LICENSE).
+[MIT License](https://github.com/omg-services/google-calender/blob/master/LICENSE).

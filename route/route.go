@@ -26,10 +26,10 @@ var routes = Routes{
         calender.CreateCalender,
     },
     Route{
-        "GetEventByID",
+        "GetCalenderByID",
         "POST",
-        "/getEvent",
-        calender.GetEventByID,
+        "/getCalender",
+        calender.GetCalenderByID,
     },
     Route{
         "EventList",
@@ -42,6 +42,12 @@ var routes = Routes{
         "POST",
         "/createEvent",
         calender.CreateEvent,
+    },
+    Route{
+        "GetEventByID",
+        "POST",
+        "/getEvent",
+        calender.GetEventByID,
     },
 }
 

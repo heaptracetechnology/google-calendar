@@ -64,19 +64,19 @@ actions:
         timeZone:
           help: The time zone of the calendar.
           type: string
-  getEvent:
-    help: Get event by ID.
+  getCalender:
+    help: Get calender by ID.
     http:
       port: 3000
       method: post
-      path: /getEvent
+      path: /getCalender
       contentType: application/json
     arguments:
-      eventId:
+      calenderId:
         type: string
         in: requestBody
         required: true
-        help: The summary for new calender.
+        help: The calender Id to get details.
     output:
       type: object
       contentType: application/json
@@ -182,34 +182,133 @@ actions:
         in: requestBody
         required: true
         help: The end date and time for event, provide datetime with "2006-01-02T15:04:05.000Z" format.
-      
     output:
       type: object
       contentType: application/json
       properties:
-        conferenceProperties: 
-          help: Conferencing properties for this calendar.
+        attendees:
+          help: The list and details of attendees.
           type: list
-        description:
-          help: Description of the calendar. 
+        created:
+          help: The event created date.
           type: string
+        creator:
+          help: The creator details.
+          type: object
+        description:
+          help: The event description.
+          type: string
+        end: 
+          help: The event end date and time details.
+          type: object
         etag:
-          help: ETag of the resource.	
+          help: The etag of event.
+          type: string
+        htmlLink:
+          help: The htmlLink of event.
+          type: string
+        iCalUID:
+          help: The iCalUID of event.
           type: string
         id:
-          help: Identifier of the calendar.
+          help: The ID of event.
           type: string
         kind:
-          help: Type of the resource 
+          help: The kind of event.
           type: string
         location:
-          help: Geographic location of the calendar as free-form text. 
+          help: The location of event.
+          type: string
+        organizer:
+          help: The object with organizer details.
+          type: object
+        reminders:
+          help: The object with reminders details.
+          type: object
+        start:
+          help: The event start date and time details.
+          type: object
+        status:
+          help: The status of event.
           type: string
         summary:
-          help: Title of the calendar.
+          help: The summary of event.
           type: string
-        timeZone:
-          help: The time zone of the calendar.
+        updated:
+          help: The updated date and time of event.
+          type: string
+  getEvent:
+    help: Get event by ID.
+    http:
+      port: 3000
+      method: post
+      path: /getEvent
+      contentType: application/json
+    arguments:
+      calenderId:
+        type: string
+        in: requestBody
+        required: true
+        help: The calender Id.
+      eventId:
+        type: string
+        in: requestBody
+        required: true
+        help: The event Id to get details.
+    output:
+      type: object
+      contentType: application/json
+      properties:
+        attendees:
+          help: The list and details of attendees.
+          type: list
+        created:
+          help: The event created date.
+          type: string
+        creator:
+          help: The creator details.
+          type: object
+        description:
+          help: The event description.
+          type: string
+        end: 
+          help: The event end date and time details.
+          type: object
+        etag:
+          help: The etag of event.
+          type: string
+        htmlLink:
+          help: The htmlLink of event.
+          type: string
+        iCalUID:
+          help: The iCalUID of event.
+          type: string
+        id:
+          help: The ID of event.
+          type: string
+        kind:
+          help: The kind of event.
+          type: string
+        location:
+          help: The location of event.
+          type: string
+        organizer:
+          help: The object with organizer details.
+          type: object
+        reminders:
+          help: The object with reminders details.
+          type: object
+        start:
+          help: The event start date and time details.
+          type: object
+        status:
+          help: The status of event.
+          type: string
+        summary:
+          help: The summary of event.
+          type: string
+        updated:
+          help: The updated date and time of event.
           type: string
 environment:
   KEY:
