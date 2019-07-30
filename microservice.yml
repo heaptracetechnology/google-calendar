@@ -1,0 +1,218 @@
+omg: 1
+lifecycle:
+  startup:
+    command: ["google-calender"]
+info:
+  version: 1.0.0
+  title: Google Calender
+  description: This is a google-calender service.
+  contact:
+    name: Rohit Shetty
+    url: https://github.com/ht68rohit
+    email: rohits@heaptrace.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+actions:
+  createCalender:
+    help: Create new calender.
+    http:
+      port: 3000
+      method: post
+      path: /createCalender
+      contentType: application/json
+    arguments:
+      summary:
+        type: string
+        in: requestBody
+        required: true
+        help: The summary for new calender.
+      description:
+        type: string
+        in: requestBody
+        required: true
+        help: The description for new calender.
+      location:
+        type: string
+        in: requestBody
+        help: The geographic location of the calendar.
+    output:
+      type: object
+      contentType: application/json
+      properties:
+        conferenceProperties: 
+          help: Conferencing properties for this calendar.
+          type: list
+        description:
+          help: Description of the calendar. 
+          type: string
+        etag:
+          help: ETag of the resource.	
+          type: string
+        id:
+          help: Identifier of the calendar.
+          type: string
+        kind:
+          help: Type of the resource 
+          type: string
+        location:
+          help: Geographic location of the calendar as free-form text. 
+          type: string
+        summary:
+          help: Title of the calendar.
+          type: string
+        timeZone:
+          help: The time zone of the calendar.
+          type: string
+  getEvent:
+    help: Get event by ID.
+    http:
+      port: 3000
+      method: post
+      path: /getEvent
+      contentType: application/json
+    arguments:
+      eventId:
+        type: string
+        in: requestBody
+        required: true
+        help: The summary for new calender.
+    output:
+      type: object
+      contentType: application/json
+      properties:
+        accessRole:
+          help: The access role of event
+          type: string
+        backgroundColor:
+          help: The background color of event
+          type: string
+        colorId:
+          help: The color id of event
+          type: string
+        conferenceProperties: 
+          help: Conferencing properties for this calendar.
+          type: list
+        description:
+          help: Description of the calendar. 
+          type: string
+        etag:
+          help: ETag of the resource.	
+          type: string
+        foregroundColor:
+          help: The foreground color of event
+          type: string
+        id:
+          help: Identifier of the calendar.
+          type: string
+        kind:
+          help: Type of the resource 
+          type: string
+        location:
+          help: Geographic location of the calendar as free-form text. 
+          type: string
+        summary:
+          help: The summary of the calendar.
+          type: string
+        timeZone:
+          help: The time zone of the calendar.
+          type: string
+  eventList:
+    help: Get event list.
+    http:
+      port: 3000
+      method: post
+      path: /eventList
+      contentType: application/json
+    output:
+      type: object
+      contentType: application/json
+      properties:
+        etag:
+          help: ETag of the resource.	
+          type: string
+        items:
+          help: The list of events.
+          type: list
+        kind:
+          help: Type of the resource 
+          type: string
+        nextPageToken:
+          help: The next page token.
+          type: string
+  createEvent:
+    help: Create new event.
+    http:
+      port: 3000
+      method: post
+      path: /createEvent
+      contentType: application/json
+    arguments:
+      calenderId:
+        type: string
+        in: requestBody
+        required: true
+        help: The calender Id.
+      summary:
+        type: string
+        in: requestBody
+        required: true
+        help: The summary for new event.
+      attendeesList:
+        type: list
+        in: requestBody
+        required: true
+        help: The email address of all attendees for event.
+      description:
+        type: string
+        in: requestBody
+        required: true
+        help: The description for new event.
+      location:
+        type: string
+        in: requestBody
+        help: The geographic location of the calendar.
+      startDate:
+        type: string
+        in: requestBody
+        required: true
+        help: The start date and time for event, provide datetime with "2006-01-02T15:04:05.000Z" format.
+      endDate:
+        type: string
+        in: requestBody
+        required: true
+        help: The end date and time for event, provide datetime with "2006-01-02T15:04:05.000Z" format.
+      
+    output:
+      type: object
+      contentType: application/json
+      properties:
+        conferenceProperties: 
+          help: Conferencing properties for this calendar.
+          type: list
+        description:
+          help: Description of the calendar. 
+          type: string
+        etag:
+          help: ETag of the resource.	
+          type: string
+        id:
+          help: Identifier of the calendar.
+          type: string
+        kind:
+          help: Type of the resource 
+          type: string
+        location:
+          help: Geographic location of the calendar as free-form text. 
+          type: string
+        summary:
+          help: Title of the calendar.
+          type: string
+        timeZone:
+          help: The time zone of the calendar.
+          type: string
+environment:
+  KEY:
+    type: string
+    required: true
+    help: Base64 data of credential's key file.
