@@ -11,9 +11,17 @@ import (
 	"os"
 )
 
+var (
+	key            = os.Getenv("GOOGLE_CALENDER_KEY")
+	calenderID     = os.Getenv("GOOGLE_CALENDER_ID")
+	eventID        = os.Getenv("GOOGLE_CALENDER_EVENT_ID")
+	eventStartDate = os.Getenv("GOOGLE_CALENDER_EVENT_START_DATE")
+	eventEndDate   = os.Getenv("GOOGLE_CALENDER_EVENT_END_DATE")
+)
+
 var _ = Describe("Get Event List with invalid param", func() {
 
-	os.Setenv("KEY", "ewogICJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsCiAgInByb2plY3RfaWQiOiAibW9kZXJuLWJvbmQtMjQ3MDA5IiwKICAicHJpdmF0ZV9rZXlfaWQiOiAiZDkzZjM2MGJjODU0ZTBiYmI4NmU2OGY1YTE4MDQ5NzQzMjMwYmRmNCIsCiAgInByaXZhdGVfa2V5IjogIi0tLS0tQkVHSU4gUFJJVkFURSBLRVktLS0tLVxuTUlJRXZRSUJBREFOQmdrcWhraUc5dzBCQVFFRkFBU0NCS2N3Z2dTakFnRUFBb0lCQVFEcmYxWFFGaHBpZFQrc1xuRnY1VThzeVdxeUlyMTZWaGg5d3lOeExGaEUranlGQjYwM0FjQVZYckd5aGI1cElYVVc4MUIyK0NibUZoeUJFN1xuOTExdkRoUFJvZzliNGsrL3I1UEUzek8rczNubVpoYytrZTUzZjQyTlhrVjRrL0JqckZ4cmFWV0dEZFZqUHhHU1xudk1kSlp6aFA5WnB5RlNXMDNXdjB6UzVwMmc3V2Z4VUhsSjdUTkNoZVBkYk9NSnZwVWx3VUV1WnB3blYyUUVBQlxudlRLM2p3WUJJcHAvL1JvZjVMNjRDUkhVTGxqaXl6MVVwYmJYOGdtbmo0eDFjYU4vSllwaTk2NUpxZFZGbHJCZVxuam0rREpRblhWZnN6eTB4Y21pTFkrQjJjSUtBUGgzSFFXV3ZZRkNRRWtrNGZ3OTJDaENacGtGbGROTExzQ0tEQlxueXlkZVkwVVpBZ01CQUFFQ2dnRUFHb09VZ3lnNzZmNHFzQ3JLRVlFaEl1MExYTDJMcFpDVTdIUHFLWUlSTDk3WlxubmN5UXJKeURZb1FsSGZ5MmtjakZ3U1lRU2xKNFpSaVFCU3ovY0dXWXVtTlpRSlo1TlZzVW8yZWdaUzRDa1Z2SVxuN2U3aTl3SU55ejcwQ2lSNDNoWDl0VXV2bVBkVmdUWXNlYldHcC9kbXZnem9TY1FqQWNza3NKUUp6OW5nemdvYlxuUm80aTJhVmptQ0tWeDRvYkt0SFlFbG9FM0FQMll3U044R1Rhby9uRlNPdlMxREZKSHlhZm0yTDdWZVEzKy9QT1xuRnVKWDE5TFVuSVZIWEJwamVaVnJ1NG5PSzFXVFVKa3hmelJIanpLaE1uQThGSWJhbkZXR1VFb0toTXhoTVd2QVxuVHdZTXVGVG9sNllDTHh4am5PTjAvMHlZRFpVaVNYRHJBVHJEMFZGNElRS0JnUUQ0UkZwQytwdzJxWExtVlhvclxuNmxVa0VLaUxtdHVERzJpTFZNT3llM0JBNXJMQllIRjlVcEowTm5McTZiaUJQbUE0R2UwVmtucGNMcmdiOXNQb1xuMWF1WklqZG9CQ1d3LzNQejlQRE13VnVYYU16MXFRangxR3ZtSlJTL2Y2b3BFbE9Wd1QxSTV4UVkvUDZaY0tEaVxuNHZvNjk1WjZRMm9JOHZSNnZ4RUFHYkN1dVFLQmdRRHkxU2paajhUOXlzemsxZlY3MmVyV3NqK0ZYNHJVdmxjM1xuREN6NVM1ZkRiVXNENTl4TlBxUy9VSW02VjhUT3hyRFoySHNaZVhPZTN1VlVocmdlRnZKSWkrY3VqcUNETmRWTFxuT29lWFVURDcremlCNGl6UWNjV1JBU2lXQ2xzSHViT1FNSFRmZnBYUm9qdjVCMXp0elhFZ0pGK2xLYmdBcjRwUFxuN1BBcHMra1pZUUtCZ0FWbzE5Nmx2MG1objVOTlFZQTdkdWQyUlhYbFJlc3hhYkcvZ3hRY2hIR2xsVGVKZG0rWVxub1FCUFAybkc5Zkk2L2JXN091TkJjZEVZWTRLWWVlUlU0NHhPcG81cHFMaVdtRncwZGhyQUM5TGN3YnFJbUYxTVxubDUxSUtZK1NwSTZJaTdHenFEWXljc21vbVpPV1ZLc2M3djdoN2pGenpwZXJVNUJwSVdHekxacGhBb0dBRDJSSFxuZEpMU1Q2dmRGTndpOVRpNDArYjBjOFc4alFPTGo2ZXI2aGxLZzA2WUpLVTdwNEhDKzRWbFZYUmV1eVNJN1NYMVxubDRYRk9GcTBlb2tYZm9EQjFxdFhlZkg4WnBTdzhsWEJabXYxQ09QQmp5b0E0UzEwOGwzNmJwZzFjT1hxWmNkTVxuZ1NZSzVRQzlnR2xoRUltbkUveDZPNFBMYisrd2VxUndESlNrdjhFQ2dZRUFsUlYweTlmMVNvWGo5MGJUMjA0ZFxucTQwWmtuZFRMSC9WUWRFM2VzVHZrNm9wSW0wUHNaL2lRU3V5NzRWUHBYM0VPYkVRblJCcm1IYllNczk2dW9RVlxuTU1Qc0swQVhnQ2cyZW9EZUh5Z05ML3pDR2N2Q2x3RTNRc0hQUTdJWDJHVC9zOExZRzViL09pd1lnZHB4ajJFQVxudHhpNFkwK0VCWmlzRkhaK1F2R3JSRVU9XG4tLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tXG4iLAogICJjbGllbnRfZW1haWwiOiAibWljcm9zZXJ2aWNlY2FsZW5kZXJAbW9kZXJuLWJvbmQtMjQ3MDA5LmlhbS5nc2VydmljZWFjY291bnQuY29tIiwKICAiY2xpZW50X2lkIjogIjEwODY4ODE0MjY3ODExNTMyMzMyMiIsCiAgImF1dGhfdXJpIjogImh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbS9vL29hdXRoMi9hdXRoIiwKICAidG9rZW5fdXJpIjogImh0dHBzOi8vb2F1dGgyLmdvb2dsZWFwaXMuY29tL3Rva2VuIiwKICAiYXV0aF9wcm92aWRlcl94NTA5X2NlcnRfdXJsIjogImh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL29hdXRoMi92MS9jZXJ0cyIsCiAgImNsaWVudF94NTA5X2NlcnRfdXJsIjogImh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL3JvYm90L3YxL21ldGFkYXRhL3g1MDkvbWljcm9zZXJ2aWNlY2FsZW5kZXIlNDBtb2Rlcm4tYm9uZC0yNDcwMDkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iCn0K")
+	os.Setenv("KEY", key)
 	calender := []byte(`{"status":false}`)
 	requestBody := new(bytes.Buffer)
 	encodeErr := json.NewEncoder(requestBody).Encode(calender)
@@ -67,7 +75,7 @@ var _ = Describe("Get Event List with invalid key", func() {
 
 var _ = Describe("Get Event List with valid param", func() {
 
-	os.Setenv("KEY", "ewogICJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsCiAgInByb2plY3RfaWQiOiAibW9kZXJuLWJvbmQtMjQ3MDA5IiwKICAicHJpdmF0ZV9rZXlfaWQiOiAiZDkzZjM2MGJjODU0ZTBiYmI4NmU2OGY1YTE4MDQ5NzQzMjMwYmRmNCIsCiAgInByaXZhdGVfa2V5IjogIi0tLS0tQkVHSU4gUFJJVkFURSBLRVktLS0tLVxuTUlJRXZRSUJBREFOQmdrcWhraUc5dzBCQVFFRkFBU0NCS2N3Z2dTakFnRUFBb0lCQVFEcmYxWFFGaHBpZFQrc1xuRnY1VThzeVdxeUlyMTZWaGg5d3lOeExGaEUranlGQjYwM0FjQVZYckd5aGI1cElYVVc4MUIyK0NibUZoeUJFN1xuOTExdkRoUFJvZzliNGsrL3I1UEUzek8rczNubVpoYytrZTUzZjQyTlhrVjRrL0JqckZ4cmFWV0dEZFZqUHhHU1xudk1kSlp6aFA5WnB5RlNXMDNXdjB6UzVwMmc3V2Z4VUhsSjdUTkNoZVBkYk9NSnZwVWx3VUV1WnB3blYyUUVBQlxudlRLM2p3WUJJcHAvL1JvZjVMNjRDUkhVTGxqaXl6MVVwYmJYOGdtbmo0eDFjYU4vSllwaTk2NUpxZFZGbHJCZVxuam0rREpRblhWZnN6eTB4Y21pTFkrQjJjSUtBUGgzSFFXV3ZZRkNRRWtrNGZ3OTJDaENacGtGbGROTExzQ0tEQlxueXlkZVkwVVpBZ01CQUFFQ2dnRUFHb09VZ3lnNzZmNHFzQ3JLRVlFaEl1MExYTDJMcFpDVTdIUHFLWUlSTDk3WlxubmN5UXJKeURZb1FsSGZ5MmtjakZ3U1lRU2xKNFpSaVFCU3ovY0dXWXVtTlpRSlo1TlZzVW8yZWdaUzRDa1Z2SVxuN2U3aTl3SU55ejcwQ2lSNDNoWDl0VXV2bVBkVmdUWXNlYldHcC9kbXZnem9TY1FqQWNza3NKUUp6OW5nemdvYlxuUm80aTJhVmptQ0tWeDRvYkt0SFlFbG9FM0FQMll3U044R1Rhby9uRlNPdlMxREZKSHlhZm0yTDdWZVEzKy9QT1xuRnVKWDE5TFVuSVZIWEJwamVaVnJ1NG5PSzFXVFVKa3hmelJIanpLaE1uQThGSWJhbkZXR1VFb0toTXhoTVd2QVxuVHdZTXVGVG9sNllDTHh4am5PTjAvMHlZRFpVaVNYRHJBVHJEMFZGNElRS0JnUUQ0UkZwQytwdzJxWExtVlhvclxuNmxVa0VLaUxtdHVERzJpTFZNT3llM0JBNXJMQllIRjlVcEowTm5McTZiaUJQbUE0R2UwVmtucGNMcmdiOXNQb1xuMWF1WklqZG9CQ1d3LzNQejlQRE13VnVYYU16MXFRangxR3ZtSlJTL2Y2b3BFbE9Wd1QxSTV4UVkvUDZaY0tEaVxuNHZvNjk1WjZRMm9JOHZSNnZ4RUFHYkN1dVFLQmdRRHkxU2paajhUOXlzemsxZlY3MmVyV3NqK0ZYNHJVdmxjM1xuREN6NVM1ZkRiVXNENTl4TlBxUy9VSW02VjhUT3hyRFoySHNaZVhPZTN1VlVocmdlRnZKSWkrY3VqcUNETmRWTFxuT29lWFVURDcremlCNGl6UWNjV1JBU2lXQ2xzSHViT1FNSFRmZnBYUm9qdjVCMXp0elhFZ0pGK2xLYmdBcjRwUFxuN1BBcHMra1pZUUtCZ0FWbzE5Nmx2MG1objVOTlFZQTdkdWQyUlhYbFJlc3hhYkcvZ3hRY2hIR2xsVGVKZG0rWVxub1FCUFAybkc5Zkk2L2JXN091TkJjZEVZWTRLWWVlUlU0NHhPcG81cHFMaVdtRncwZGhyQUM5TGN3YnFJbUYxTVxubDUxSUtZK1NwSTZJaTdHenFEWXljc21vbVpPV1ZLc2M3djdoN2pGenpwZXJVNUJwSVdHekxacGhBb0dBRDJSSFxuZEpMU1Q2dmRGTndpOVRpNDArYjBjOFc4alFPTGo2ZXI2aGxLZzA2WUpLVTdwNEhDKzRWbFZYUmV1eVNJN1NYMVxubDRYRk9GcTBlb2tYZm9EQjFxdFhlZkg4WnBTdzhsWEJabXYxQ09QQmp5b0E0UzEwOGwzNmJwZzFjT1hxWmNkTVxuZ1NZSzVRQzlnR2xoRUltbkUveDZPNFBMYisrd2VxUndESlNrdjhFQ2dZRUFsUlYweTlmMVNvWGo5MGJUMjA0ZFxucTQwWmtuZFRMSC9WUWRFM2VzVHZrNm9wSW0wUHNaL2lRU3V5NzRWUHBYM0VPYkVRblJCcm1IYllNczk2dW9RVlxuTU1Qc0swQVhnQ2cyZW9EZUh5Z05ML3pDR2N2Q2x3RTNRc0hQUTdJWDJHVC9zOExZRzViL09pd1lnZHB4ajJFQVxudHhpNFkwK0VCWmlzRkhaK1F2R3JSRVU9XG4tLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tXG4iLAogICJjbGllbnRfZW1haWwiOiAibWljcm9zZXJ2aWNlY2FsZW5kZXJAbW9kZXJuLWJvbmQtMjQ3MDA5LmlhbS5nc2VydmljZWFjY291bnQuY29tIiwKICAiY2xpZW50X2lkIjogIjEwODY4ODE0MjY3ODExNTMyMzMyMiIsCiAgImF1dGhfdXJpIjogImh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbS9vL29hdXRoMi9hdXRoIiwKICAidG9rZW5fdXJpIjogImh0dHBzOi8vb2F1dGgyLmdvb2dsZWFwaXMuY29tL3Rva2VuIiwKICAiYXV0aF9wcm92aWRlcl94NTA5X2NlcnRfdXJsIjogImh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL29hdXRoMi92MS9jZXJ0cyIsCiAgImNsaWVudF94NTA5X2NlcnRfdXJsIjogImh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL3JvYm90L3YxL21ldGFkYXRhL3g1MDkvbWljcm9zZXJ2aWNlY2FsZW5kZXIlNDBtb2Rlcm4tYm9uZC0yNDcwMDkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iCn0K")
+	os.Setenv("KEY", key)
 	calender := CalenderArguments{}
 	requestBody := new(bytes.Buffer)
 	encodeErr := json.NewEncoder(requestBody).Encode(calender)
@@ -92,9 +100,9 @@ var _ = Describe("Get Event List with valid param", func() {
 	})
 })
 
-var _ = Describe("Get Event List with invalid param", func() {
+var _ = Describe("Get Event by ID with invalid param", func() {
 
-	os.Setenv("KEY", "ewogICJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsCiAgInByb2plY3RfaWQiOiAibW9kZXJuLWJvbmQtMjQ3MDA5IiwKICAicHJpdmF0ZV9rZXlfaWQiOiAiZDkzZjM2MGJjODU0ZTBiYmI4NmU2OGY1YTE4MDQ5NzQzMjMwYmRmNCIsCiAgInByaXZhdGVfa2V5IjogIi0tLS0tQkVHSU4gUFJJVkFURSBLRVktLS0tLVxuTUlJRXZRSUJBREFOQmdrcWhraUc5dzBCQVFFRkFBU0NCS2N3Z2dTakFnRUFBb0lCQVFEcmYxWFFGaHBpZFQrc1xuRnY1VThzeVdxeUlyMTZWaGg5d3lOeExGaEUranlGQjYwM0FjQVZYckd5aGI1cElYVVc4MUIyK0NibUZoeUJFN1xuOTExdkRoUFJvZzliNGsrL3I1UEUzek8rczNubVpoYytrZTUzZjQyTlhrVjRrL0JqckZ4cmFWV0dEZFZqUHhHU1xudk1kSlp6aFA5WnB5RlNXMDNXdjB6UzVwMmc3V2Z4VUhsSjdUTkNoZVBkYk9NSnZwVWx3VUV1WnB3blYyUUVBQlxudlRLM2p3WUJJcHAvL1JvZjVMNjRDUkhVTGxqaXl6MVVwYmJYOGdtbmo0eDFjYU4vSllwaTk2NUpxZFZGbHJCZVxuam0rREpRblhWZnN6eTB4Y21pTFkrQjJjSUtBUGgzSFFXV3ZZRkNRRWtrNGZ3OTJDaENacGtGbGROTExzQ0tEQlxueXlkZVkwVVpBZ01CQUFFQ2dnRUFHb09VZ3lnNzZmNHFzQ3JLRVlFaEl1MExYTDJMcFpDVTdIUHFLWUlSTDk3WlxubmN5UXJKeURZb1FsSGZ5MmtjakZ3U1lRU2xKNFpSaVFCU3ovY0dXWXVtTlpRSlo1TlZzVW8yZWdaUzRDa1Z2SVxuN2U3aTl3SU55ejcwQ2lSNDNoWDl0VXV2bVBkVmdUWXNlYldHcC9kbXZnem9TY1FqQWNza3NKUUp6OW5nemdvYlxuUm80aTJhVmptQ0tWeDRvYkt0SFlFbG9FM0FQMll3U044R1Rhby9uRlNPdlMxREZKSHlhZm0yTDdWZVEzKy9QT1xuRnVKWDE5TFVuSVZIWEJwamVaVnJ1NG5PSzFXVFVKa3hmelJIanpLaE1uQThGSWJhbkZXR1VFb0toTXhoTVd2QVxuVHdZTXVGVG9sNllDTHh4am5PTjAvMHlZRFpVaVNYRHJBVHJEMFZGNElRS0JnUUQ0UkZwQytwdzJxWExtVlhvclxuNmxVa0VLaUxtdHVERzJpTFZNT3llM0JBNXJMQllIRjlVcEowTm5McTZiaUJQbUE0R2UwVmtucGNMcmdiOXNQb1xuMWF1WklqZG9CQ1d3LzNQejlQRE13VnVYYU16MXFRangxR3ZtSlJTL2Y2b3BFbE9Wd1QxSTV4UVkvUDZaY0tEaVxuNHZvNjk1WjZRMm9JOHZSNnZ4RUFHYkN1dVFLQmdRRHkxU2paajhUOXlzemsxZlY3MmVyV3NqK0ZYNHJVdmxjM1xuREN6NVM1ZkRiVXNENTl4TlBxUy9VSW02VjhUT3hyRFoySHNaZVhPZTN1VlVocmdlRnZKSWkrY3VqcUNETmRWTFxuT29lWFVURDcremlCNGl6UWNjV1JBU2lXQ2xzSHViT1FNSFRmZnBYUm9qdjVCMXp0elhFZ0pGK2xLYmdBcjRwUFxuN1BBcHMra1pZUUtCZ0FWbzE5Nmx2MG1objVOTlFZQTdkdWQyUlhYbFJlc3hhYkcvZ3hRY2hIR2xsVGVKZG0rWVxub1FCUFAybkc5Zkk2L2JXN091TkJjZEVZWTRLWWVlUlU0NHhPcG81cHFMaVdtRncwZGhyQUM5TGN3YnFJbUYxTVxubDUxSUtZK1NwSTZJaTdHenFEWXljc21vbVpPV1ZLc2M3djdoN2pGenpwZXJVNUJwSVdHekxacGhBb0dBRDJSSFxuZEpMU1Q2dmRGTndpOVRpNDArYjBjOFc4alFPTGo2ZXI2aGxLZzA2WUpLVTdwNEhDKzRWbFZYUmV1eVNJN1NYMVxubDRYRk9GcTBlb2tYZm9EQjFxdFhlZkg4WnBTdzhsWEJabXYxQ09QQmp5b0E0UzEwOGwzNmJwZzFjT1hxWmNkTVxuZ1NZSzVRQzlnR2xoRUltbkUveDZPNFBMYisrd2VxUndESlNrdjhFQ2dZRUFsUlYweTlmMVNvWGo5MGJUMjA0ZFxucTQwWmtuZFRMSC9WUWRFM2VzVHZrNm9wSW0wUHNaL2lRU3V5NzRWUHBYM0VPYkVRblJCcm1IYllNczk2dW9RVlxuTU1Qc0swQVhnQ2cyZW9EZUh5Z05ML3pDR2N2Q2x3RTNRc0hQUTdJWDJHVC9zOExZRzViL09pd1lnZHB4ajJFQVxudHhpNFkwK0VCWmlzRkhaK1F2R3JSRVU9XG4tLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tXG4iLAogICJjbGllbnRfZW1haWwiOiAibWljcm9zZXJ2aWNlY2FsZW5kZXJAbW9kZXJuLWJvbmQtMjQ3MDA5LmlhbS5nc2VydmljZWFjY291bnQuY29tIiwKICAiY2xpZW50X2lkIjogIjEwODY4ODE0MjY3ODExNTMyMzMyMiIsCiAgImF1dGhfdXJpIjogImh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbS9vL29hdXRoMi9hdXRoIiwKICAidG9rZW5fdXJpIjogImh0dHBzOi8vb2F1dGgyLmdvb2dsZWFwaXMuY29tL3Rva2VuIiwKICAiYXV0aF9wcm92aWRlcl94NTA5X2NlcnRfdXJsIjogImh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL29hdXRoMi92MS9jZXJ0cyIsCiAgImNsaWVudF94NTA5X2NlcnRfdXJsIjogImh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL3JvYm90L3YxL21ldGFkYXRhL3g1MDkvbWljcm9zZXJ2aWNlY2FsZW5kZXIlNDBtb2Rlcm4tYm9uZC0yNDcwMDkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iCn0K")
+	os.Setenv("KEY", key)
 	calender := []byte(`{"status":false}`)
 	requestBody := new(bytes.Buffer)
 	encodeErr := json.NewEncoder(requestBody).Encode(calender)
@@ -119,7 +127,7 @@ var _ = Describe("Get Event List with invalid param", func() {
 	})
 })
 
-var _ = Describe("Get Event List with invalid key", func() {
+var _ = Describe("Get Event by ID with invalid key", func() {
 
 	os.Setenv("KEY", "mockKey")
 	calender := CalenderArguments{}
@@ -148,7 +156,7 @@ var _ = Describe("Get Event List with invalid key", func() {
 
 var _ = Describe("Get Event by ID with invalid param", func() {
 
-	os.Setenv("KEY", "ewogICJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsCiAgInByb2plY3RfaWQiOiAibW9kZXJuLWJvbmQtMjQ3MDA5IiwKICAicHJpdmF0ZV9rZXlfaWQiOiAiZDkzZjM2MGJjODU0ZTBiYmI4NmU2OGY1YTE4MDQ5NzQzMjMwYmRmNCIsCiAgInByaXZhdGVfa2V5IjogIi0tLS0tQkVHSU4gUFJJVkFURSBLRVktLS0tLVxuTUlJRXZRSUJBREFOQmdrcWhraUc5dzBCQVFFRkFBU0NCS2N3Z2dTakFnRUFBb0lCQVFEcmYxWFFGaHBpZFQrc1xuRnY1VThzeVdxeUlyMTZWaGg5d3lOeExGaEUranlGQjYwM0FjQVZYckd5aGI1cElYVVc4MUIyK0NibUZoeUJFN1xuOTExdkRoUFJvZzliNGsrL3I1UEUzek8rczNubVpoYytrZTUzZjQyTlhrVjRrL0JqckZ4cmFWV0dEZFZqUHhHU1xudk1kSlp6aFA5WnB5RlNXMDNXdjB6UzVwMmc3V2Z4VUhsSjdUTkNoZVBkYk9NSnZwVWx3VUV1WnB3blYyUUVBQlxudlRLM2p3WUJJcHAvL1JvZjVMNjRDUkhVTGxqaXl6MVVwYmJYOGdtbmo0eDFjYU4vSllwaTk2NUpxZFZGbHJCZVxuam0rREpRblhWZnN6eTB4Y21pTFkrQjJjSUtBUGgzSFFXV3ZZRkNRRWtrNGZ3OTJDaENacGtGbGROTExzQ0tEQlxueXlkZVkwVVpBZ01CQUFFQ2dnRUFHb09VZ3lnNzZmNHFzQ3JLRVlFaEl1MExYTDJMcFpDVTdIUHFLWUlSTDk3WlxubmN5UXJKeURZb1FsSGZ5MmtjakZ3U1lRU2xKNFpSaVFCU3ovY0dXWXVtTlpRSlo1TlZzVW8yZWdaUzRDa1Z2SVxuN2U3aTl3SU55ejcwQ2lSNDNoWDl0VXV2bVBkVmdUWXNlYldHcC9kbXZnem9TY1FqQWNza3NKUUp6OW5nemdvYlxuUm80aTJhVmptQ0tWeDRvYkt0SFlFbG9FM0FQMll3U044R1Rhby9uRlNPdlMxREZKSHlhZm0yTDdWZVEzKy9QT1xuRnVKWDE5TFVuSVZIWEJwamVaVnJ1NG5PSzFXVFVKa3hmelJIanpLaE1uQThGSWJhbkZXR1VFb0toTXhoTVd2QVxuVHdZTXVGVG9sNllDTHh4am5PTjAvMHlZRFpVaVNYRHJBVHJEMFZGNElRS0JnUUQ0UkZwQytwdzJxWExtVlhvclxuNmxVa0VLaUxtdHVERzJpTFZNT3llM0JBNXJMQllIRjlVcEowTm5McTZiaUJQbUE0R2UwVmtucGNMcmdiOXNQb1xuMWF1WklqZG9CQ1d3LzNQejlQRE13VnVYYU16MXFRangxR3ZtSlJTL2Y2b3BFbE9Wd1QxSTV4UVkvUDZaY0tEaVxuNHZvNjk1WjZRMm9JOHZSNnZ4RUFHYkN1dVFLQmdRRHkxU2paajhUOXlzemsxZlY3MmVyV3NqK0ZYNHJVdmxjM1xuREN6NVM1ZkRiVXNENTl4TlBxUy9VSW02VjhUT3hyRFoySHNaZVhPZTN1VlVocmdlRnZKSWkrY3VqcUNETmRWTFxuT29lWFVURDcremlCNGl6UWNjV1JBU2lXQ2xzSHViT1FNSFRmZnBYUm9qdjVCMXp0elhFZ0pGK2xLYmdBcjRwUFxuN1BBcHMra1pZUUtCZ0FWbzE5Nmx2MG1objVOTlFZQTdkdWQyUlhYbFJlc3hhYkcvZ3hRY2hIR2xsVGVKZG0rWVxub1FCUFAybkc5Zkk2L2JXN091TkJjZEVZWTRLWWVlUlU0NHhPcG81cHFMaVdtRncwZGhyQUM5TGN3YnFJbUYxTVxubDUxSUtZK1NwSTZJaTdHenFEWXljc21vbVpPV1ZLc2M3djdoN2pGenpwZXJVNUJwSVdHekxacGhBb0dBRDJSSFxuZEpMU1Q2dmRGTndpOVRpNDArYjBjOFc4alFPTGo2ZXI2aGxLZzA2WUpLVTdwNEhDKzRWbFZYUmV1eVNJN1NYMVxubDRYRk9GcTBlb2tYZm9EQjFxdFhlZkg4WnBTdzhsWEJabXYxQ09QQmp5b0E0UzEwOGwzNmJwZzFjT1hxWmNkTVxuZ1NZSzVRQzlnR2xoRUltbkUveDZPNFBMYisrd2VxUndESlNrdjhFQ2dZRUFsUlYweTlmMVNvWGo5MGJUMjA0ZFxucTQwWmtuZFRMSC9WUWRFM2VzVHZrNm9wSW0wUHNaL2lRU3V5NzRWUHBYM0VPYkVRblJCcm1IYllNczk2dW9RVlxuTU1Qc0swQVhnQ2cyZW9EZUh5Z05ML3pDR2N2Q2x3RTNRc0hQUTdJWDJHVC9zOExZRzViL09pd1lnZHB4ajJFQVxudHhpNFkwK0VCWmlzRkhaK1F2R3JSRVU9XG4tLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tXG4iLAogICJjbGllbnRfZW1haWwiOiAibWljcm9zZXJ2aWNlY2FsZW5kZXJAbW9kZXJuLWJvbmQtMjQ3MDA5LmlhbS5nc2VydmljZWFjY291bnQuY29tIiwKICAiY2xpZW50X2lkIjogIjEwODY4ODE0MjY3ODExNTMyMzMyMiIsCiAgImF1dGhfdXJpIjogImh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbS9vL29hdXRoMi9hdXRoIiwKICAidG9rZW5fdXJpIjogImh0dHBzOi8vb2F1dGgyLmdvb2dsZWFwaXMuY29tL3Rva2VuIiwKICAiYXV0aF9wcm92aWRlcl94NTA5X2NlcnRfdXJsIjogImh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL29hdXRoMi92MS9jZXJ0cyIsCiAgImNsaWVudF94NTA5X2NlcnRfdXJsIjogImh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL3JvYm90L3YxL21ldGFkYXRhL3g1MDkvbWljcm9zZXJ2aWNlY2FsZW5kZXIlNDBtb2Rlcm4tYm9uZC0yNDcwMDkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iCn0K")
+	os.Setenv("KEY", key)
 	calender := CalenderArguments{CalenderID: "mockCalenderID", EventID: "mockEventID"}
 	requestBody := new(bytes.Buffer)
 	encodeErr := json.NewEncoder(requestBody).Encode(calender)
@@ -175,8 +183,8 @@ var _ = Describe("Get Event by ID with invalid param", func() {
 
 var _ = Describe("Get Event by ID with valid param", func() {
 
-	os.Setenv("KEY", "ewogICJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsCiAgInByb2plY3RfaWQiOiAibW9kZXJuLWJvbmQtMjQ3MDA5IiwKICAicHJpdmF0ZV9rZXlfaWQiOiAiZDkzZjM2MGJjODU0ZTBiYmI4NmU2OGY1YTE4MDQ5NzQzMjMwYmRmNCIsCiAgInByaXZhdGVfa2V5IjogIi0tLS0tQkVHSU4gUFJJVkFURSBLRVktLS0tLVxuTUlJRXZRSUJBREFOQmdrcWhraUc5dzBCQVFFRkFBU0NCS2N3Z2dTakFnRUFBb0lCQVFEcmYxWFFGaHBpZFQrc1xuRnY1VThzeVdxeUlyMTZWaGg5d3lOeExGaEUranlGQjYwM0FjQVZYckd5aGI1cElYVVc4MUIyK0NibUZoeUJFN1xuOTExdkRoUFJvZzliNGsrL3I1UEUzek8rczNubVpoYytrZTUzZjQyTlhrVjRrL0JqckZ4cmFWV0dEZFZqUHhHU1xudk1kSlp6aFA5WnB5RlNXMDNXdjB6UzVwMmc3V2Z4VUhsSjdUTkNoZVBkYk9NSnZwVWx3VUV1WnB3blYyUUVBQlxudlRLM2p3WUJJcHAvL1JvZjVMNjRDUkhVTGxqaXl6MVVwYmJYOGdtbmo0eDFjYU4vSllwaTk2NUpxZFZGbHJCZVxuam0rREpRblhWZnN6eTB4Y21pTFkrQjJjSUtBUGgzSFFXV3ZZRkNRRWtrNGZ3OTJDaENacGtGbGROTExzQ0tEQlxueXlkZVkwVVpBZ01CQUFFQ2dnRUFHb09VZ3lnNzZmNHFzQ3JLRVlFaEl1MExYTDJMcFpDVTdIUHFLWUlSTDk3WlxubmN5UXJKeURZb1FsSGZ5MmtjakZ3U1lRU2xKNFpSaVFCU3ovY0dXWXVtTlpRSlo1TlZzVW8yZWdaUzRDa1Z2SVxuN2U3aTl3SU55ejcwQ2lSNDNoWDl0VXV2bVBkVmdUWXNlYldHcC9kbXZnem9TY1FqQWNza3NKUUp6OW5nemdvYlxuUm80aTJhVmptQ0tWeDRvYkt0SFlFbG9FM0FQMll3U044R1Rhby9uRlNPdlMxREZKSHlhZm0yTDdWZVEzKy9QT1xuRnVKWDE5TFVuSVZIWEJwamVaVnJ1NG5PSzFXVFVKa3hmelJIanpLaE1uQThGSWJhbkZXR1VFb0toTXhoTVd2QVxuVHdZTXVGVG9sNllDTHh4am5PTjAvMHlZRFpVaVNYRHJBVHJEMFZGNElRS0JnUUQ0UkZwQytwdzJxWExtVlhvclxuNmxVa0VLaUxtdHVERzJpTFZNT3llM0JBNXJMQllIRjlVcEowTm5McTZiaUJQbUE0R2UwVmtucGNMcmdiOXNQb1xuMWF1WklqZG9CQ1d3LzNQejlQRE13VnVYYU16MXFRangxR3ZtSlJTL2Y2b3BFbE9Wd1QxSTV4UVkvUDZaY0tEaVxuNHZvNjk1WjZRMm9JOHZSNnZ4RUFHYkN1dVFLQmdRRHkxU2paajhUOXlzemsxZlY3MmVyV3NqK0ZYNHJVdmxjM1xuREN6NVM1ZkRiVXNENTl4TlBxUy9VSW02VjhUT3hyRFoySHNaZVhPZTN1VlVocmdlRnZKSWkrY3VqcUNETmRWTFxuT29lWFVURDcremlCNGl6UWNjV1JBU2lXQ2xzSHViT1FNSFRmZnBYUm9qdjVCMXp0elhFZ0pGK2xLYmdBcjRwUFxuN1BBcHMra1pZUUtCZ0FWbzE5Nmx2MG1objVOTlFZQTdkdWQyUlhYbFJlc3hhYkcvZ3hRY2hIR2xsVGVKZG0rWVxub1FCUFAybkc5Zkk2L2JXN091TkJjZEVZWTRLWWVlUlU0NHhPcG81cHFMaVdtRncwZGhyQUM5TGN3YnFJbUYxTVxubDUxSUtZK1NwSTZJaTdHenFEWXljc21vbVpPV1ZLc2M3djdoN2pGenpwZXJVNUJwSVdHekxacGhBb0dBRDJSSFxuZEpMU1Q2dmRGTndpOVRpNDArYjBjOFc4alFPTGo2ZXI2aGxLZzA2WUpLVTdwNEhDKzRWbFZYUmV1eVNJN1NYMVxubDRYRk9GcTBlb2tYZm9EQjFxdFhlZkg4WnBTdzhsWEJabXYxQ09QQmp5b0E0UzEwOGwzNmJwZzFjT1hxWmNkTVxuZ1NZSzVRQzlnR2xoRUltbkUveDZPNFBMYisrd2VxUndESlNrdjhFQ2dZRUFsUlYweTlmMVNvWGo5MGJUMjA0ZFxucTQwWmtuZFRMSC9WUWRFM2VzVHZrNm9wSW0wUHNaL2lRU3V5NzRWUHBYM0VPYkVRblJCcm1IYllNczk2dW9RVlxuTU1Qc0swQVhnQ2cyZW9EZUh5Z05ML3pDR2N2Q2x3RTNRc0hQUTdJWDJHVC9zOExZRzViL09pd1lnZHB4ajJFQVxudHhpNFkwK0VCWmlzRkhaK1F2R3JSRVU9XG4tLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tXG4iLAogICJjbGllbnRfZW1haWwiOiAibWljcm9zZXJ2aWNlY2FsZW5kZXJAbW9kZXJuLWJvbmQtMjQ3MDA5LmlhbS5nc2VydmljZWFjY291bnQuY29tIiwKICAiY2xpZW50X2lkIjogIjEwODY4ODE0MjY3ODExNTMyMzMyMiIsCiAgImF1dGhfdXJpIjogImh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbS9vL29hdXRoMi9hdXRoIiwKICAidG9rZW5fdXJpIjogImh0dHBzOi8vb2F1dGgyLmdvb2dsZWFwaXMuY29tL3Rva2VuIiwKICAiYXV0aF9wcm92aWRlcl94NTA5X2NlcnRfdXJsIjogImh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL29hdXRoMi92MS9jZXJ0cyIsCiAgImNsaWVudF94NTA5X2NlcnRfdXJsIjogImh0dHBzOi8vd3d3Lmdvb2dsZWFwaXMuY29tL3JvYm90L3YxL21ldGFkYXRhL3g1MDkvbWljcm9zZXJ2aWNlY2FsZW5kZXIlNDBtb2Rlcm4tYm9uZC0yNDcwMDkuaWFtLmdzZXJ2aWNlYWNjb3VudC5jb20iCn0K")
-	calender := CalenderArguments{CalenderID: "mp24uh3faq85q64mmcilc0shqg@group.calendar.google.com", EventID: "at5r7p2k47hkrehsnot12mc3go"}
+	os.Setenv("KEY", key)
+	calender := CalenderArguments{CalenderID: calenderID, EventID: eventID}
 	requestBody := new(bytes.Buffer)
 	encodeErr := json.NewEncoder(requestBody).Encode(calender)
 	if encodeErr != nil {
@@ -193,6 +201,330 @@ var _ = Describe("Get Event by ID with valid param", func() {
 
 	Describe("Get Event", func() {
 		Context("event by id", func() {
+			It("Should result http.StatusOK", func() {
+				Expect(recorder.Code).To(Equal(http.StatusOK))
+			})
+		})
+	})
+})
+
+var _ = Describe("Get Calender By ID with invalid param", func() {
+
+	os.Setenv("KEY", key)
+	calender := []byte(`{"status":false}`)
+	requestBody := new(bytes.Buffer)
+	encodeErr := json.NewEncoder(requestBody).Encode(calender)
+	if encodeErr != nil {
+		log.Fatal(encodeErr)
+	}
+
+	request, err := http.NewRequest("POST", "/getCalender", requestBody)
+	if err != nil {
+		log.Fatal(err)
+	}
+	recorder := httptest.NewRecorder()
+	handler := http.HandlerFunc(GetCalenderByID)
+	handler.ServeHTTP(recorder, request)
+
+	Describe("Get Calender", func() {
+		Context("Calender by id", func() {
+			It("Should result http.StatusBadRequest", func() {
+				Expect(recorder.Code).To(Equal(http.StatusBadRequest))
+			})
+		})
+	})
+})
+
+var _ = Describe("Get Calender By ID with invalid key", func() {
+
+	os.Setenv("KEY", "mockKey")
+	calender := CalenderArguments{}
+	requestBody := new(bytes.Buffer)
+	encodeErr := json.NewEncoder(requestBody).Encode(calender)
+	if encodeErr != nil {
+		log.Fatal(encodeErr)
+	}
+
+	request, err := http.NewRequest("POST", "/getCalender", requestBody)
+	if err != nil {
+		log.Fatal(err)
+	}
+	recorder := httptest.NewRecorder()
+	handler := http.HandlerFunc(GetCalenderByID)
+	handler.ServeHTTP(recorder, request)
+
+	Describe("Get Calender", func() {
+		Context("Calender by id", func() {
+			It("Should result http.StatusBadRequest", func() {
+				Expect(recorder.Code).To(Equal(http.StatusBadRequest))
+			})
+		})
+	})
+})
+
+var _ = Describe("Get Calender By ID with invalid param", func() {
+
+	os.Setenv("KEY", key)
+	calender := CalenderArguments{CalenderID: "mockCalenderID"}
+	requestBody := new(bytes.Buffer)
+	encodeErr := json.NewEncoder(requestBody).Encode(calender)
+	if encodeErr != nil {
+		log.Fatal(encodeErr)
+	}
+
+	request, err := http.NewRequest("POST", "/getCalender", requestBody)
+	if err != nil {
+		log.Fatal(err)
+	}
+	recorder := httptest.NewRecorder()
+	handler := http.HandlerFunc(GetCalenderByID)
+	handler.ServeHTTP(recorder, request)
+
+	Describe("Get Calender", func() {
+		Context("Calender by id", func() {
+			It("Should result http.StatusBadRequest", func() {
+				Expect(recorder.Code).To(Equal(http.StatusBadRequest))
+			})
+		})
+	})
+})
+
+var _ = Describe("Get Calender by ID with valid param", func() {
+
+	os.Setenv("KEY", key)
+	calender := CalenderArguments{CalenderID: calenderID}
+	requestBody := new(bytes.Buffer)
+	encodeErr := json.NewEncoder(requestBody).Encode(calender)
+	if encodeErr != nil {
+		log.Fatal(encodeErr)
+	}
+
+	request, err := http.NewRequest("POST", "/getCalender", requestBody)
+	if err != nil {
+		log.Fatal(err)
+	}
+	recorder := httptest.NewRecorder()
+	handler := http.HandlerFunc(GetCalenderByID)
+	handler.ServeHTTP(recorder, request)
+
+	Describe("Get Calender", func() {
+		Context("Calender by id", func() {
+			It("Should result http.StatusOK", func() {
+				Expect(recorder.Code).To(Equal(http.StatusOK))
+			})
+		})
+	})
+})
+
+var _ = Describe("Create Calender with invalid param", func() {
+
+	os.Setenv("KEY", key)
+	calender := []byte(`{"status":false}`)
+	requestBody := new(bytes.Buffer)
+	encodeErr := json.NewEncoder(requestBody).Encode(calender)
+	if encodeErr != nil {
+		log.Fatal(encodeErr)
+	}
+
+	request, err := http.NewRequest("POST", "/createCalender", requestBody)
+	if err != nil {
+		log.Fatal(err)
+	}
+	recorder := httptest.NewRecorder()
+	handler := http.HandlerFunc(CreateCalender)
+	handler.ServeHTTP(recorder, request)
+
+	Describe("Create Calender", func() {
+		Context("create calender", func() {
+			It("Should result http.StatusBadRequest", func() {
+				Expect(recorder.Code).To(Equal(http.StatusBadRequest))
+			})
+		})
+	})
+})
+
+var _ = Describe("Get Calender List with invalid key", func() {
+
+	os.Setenv("KEY", "mockKey")
+	calender := CalenderArguments{}
+	requestBody := new(bytes.Buffer)
+	encodeErr := json.NewEncoder(requestBody).Encode(calender)
+	if encodeErr != nil {
+		log.Fatal(encodeErr)
+	}
+
+	request, err := http.NewRequest("POST", "/createCalender", requestBody)
+	if err != nil {
+		log.Fatal(err)
+	}
+	recorder := httptest.NewRecorder()
+	handler := http.HandlerFunc(CreateCalender)
+	handler.ServeHTTP(recorder, request)
+
+	Describe("Create Calender", func() {
+		Context("create calender", func() {
+			It("Should result http.StatusBadRequest", func() {
+				Expect(recorder.Code).To(Equal(http.StatusBadRequest))
+			})
+		})
+	})
+})
+
+var _ = Describe("Create Calender with invalid param", func() {
+
+	os.Setenv("KEY", key)
+	calender := CalenderArguments{EventID: "mockCalender"}
+	requestBody := new(bytes.Buffer)
+	encodeErr := json.NewEncoder(requestBody).Encode(calender)
+	if encodeErr != nil {
+		log.Fatal(encodeErr)
+	}
+
+	request, err := http.NewRequest("POST", "/createCalender", requestBody)
+	if err != nil {
+		log.Fatal(err)
+	}
+	recorder := httptest.NewRecorder()
+	handler := http.HandlerFunc(CreateCalender)
+	handler.ServeHTTP(recorder, request)
+
+	Describe("Create Calender", func() {
+		Context("create calender", func() {
+			It("Should result http.StatusBadRequest", func() {
+				Expect(recorder.Code).To(Equal(http.StatusBadRequest))
+			})
+		})
+	})
+})
+
+var _ = Describe("Create Calender with valid param", func() {
+
+	os.Setenv("KEY", key)
+	calender := CalenderArguments{Summary: "Test Calender", Description: "Test Description", Location: "Test Location"}
+	requestBody := new(bytes.Buffer)
+	encodeErr := json.NewEncoder(requestBody).Encode(calender)
+	if encodeErr != nil {
+		log.Fatal(encodeErr)
+	}
+
+	request, err := http.NewRequest("POST", "/createCalender", requestBody)
+	if err != nil {
+		log.Fatal(err)
+	}
+	recorder := httptest.NewRecorder()
+	handler := http.HandlerFunc(CreateCalender)
+	handler.ServeHTTP(recorder, request)
+
+	Describe("Create Calender", func() {
+		Context("create calender", func() {
+			It("Should result http.StatusOK", func() {
+				Expect(recorder.Code).To(Equal(http.StatusOK))
+			})
+		})
+	})
+})
+
+var _ = Describe("Create Event with invalid param", func() {
+
+	os.Setenv("KEY", key)
+	calender := []byte(`{"status":false}`)
+	requestBody := new(bytes.Buffer)
+	encodeErr := json.NewEncoder(requestBody).Encode(calender)
+	if encodeErr != nil {
+		log.Fatal(encodeErr)
+	}
+
+	request, err := http.NewRequest("POST", "/createEvent", requestBody)
+	if err != nil {
+		log.Fatal(err)
+	}
+	recorder := httptest.NewRecorder()
+	handler := http.HandlerFunc(CreateEvent)
+	handler.ServeHTTP(recorder, request)
+
+	Describe("Create Event", func() {
+		Context("create event", func() {
+			It("Should result http.StatusBadRequest", func() {
+				Expect(recorder.Code).To(Equal(http.StatusBadRequest))
+			})
+		})
+	})
+})
+
+var _ = Describe("Create Event with invalid key", func() {
+
+	os.Setenv("KEY", "mockKey")
+	calender := CalenderArguments{}
+	requestBody := new(bytes.Buffer)
+	encodeErr := json.NewEncoder(requestBody).Encode(calender)
+	if encodeErr != nil {
+		log.Fatal(encodeErr)
+	}
+
+	request, err := http.NewRequest("POST", "/createEvent", requestBody)
+	if err != nil {
+		log.Fatal(err)
+	}
+	recorder := httptest.NewRecorder()
+	handler := http.HandlerFunc(CreateEvent)
+	handler.ServeHTTP(recorder, request)
+
+	Describe("Create Event", func() {
+		Context("create event", func() {
+			It("Should result http.StatusBadRequest", func() {
+				Expect(recorder.Code).To(Equal(http.StatusBadRequest))
+			})
+		})
+	})
+})
+
+var _ = Describe("Create Event with invalid param", func() {
+
+	os.Setenv("KEY", key)
+	calender := CalenderArguments{EventID: "mockCalender"}
+	requestBody := new(bytes.Buffer)
+	encodeErr := json.NewEncoder(requestBody).Encode(calender)
+	if encodeErr != nil {
+		log.Fatal(encodeErr)
+	}
+
+	request, err := http.NewRequest("POST", "/createEvent", requestBody)
+	if err != nil {
+		log.Fatal(err)
+	}
+	recorder := httptest.NewRecorder()
+	handler := http.HandlerFunc(CreateEvent)
+	handler.ServeHTTP(recorder, request)
+
+	Describe("Create Event", func() {
+		Context("create event", func() {
+			It("Should result http.StatusBadRequest", func() {
+				Expect(recorder.Code).To(Equal(http.StatusBadRequest))
+			})
+		})
+	})
+})
+
+var _ = Describe("Create Event with valid param", func() {
+
+	os.Setenv("KEY", key)
+	calender := CalenderArguments{Summary: "Test Calender", Description: "Test Description", CalenderID: calenderID, StartDate: eventStartDate, EndDate: eventEndDate}
+	requestBody := new(bytes.Buffer)
+	encodeErr := json.NewEncoder(requestBody).Encode(calender)
+	if encodeErr != nil {
+		log.Fatal(encodeErr)
+	}
+
+	request, err := http.NewRequest("POST", "/createEvent", requestBody)
+	if err != nil {
+		log.Fatal(err)
+	}
+	recorder := httptest.NewRecorder()
+	handler := http.HandlerFunc(CreateEvent)
+	handler.ServeHTTP(recorder, request)
+
+	Describe("Create Event", func() {
+		Context("create event", func() {
 			It("Should result http.StatusOK", func() {
 				Expect(recorder.Code).To(Equal(http.StatusOK))
 			})
