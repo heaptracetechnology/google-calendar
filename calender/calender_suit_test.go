@@ -1,4 +1,4 @@
-package service
+package calender
 
 import (
 	. "github.com/onsi/ginkgo"
