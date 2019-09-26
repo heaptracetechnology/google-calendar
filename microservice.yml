@@ -132,7 +132,7 @@ actions:
       type: object
       contentType: application/json
 environment:
-  KEY:
+  CREDENTIAL_JSON:
     type: string
     required: true
-    help: Base64 data of credential's key file.
+    help: Base64 data of credential.json' file.

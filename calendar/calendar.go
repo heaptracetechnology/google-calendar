@@ -29,7 +29,7 @@ const layout = "2006-01-02T15:04:05.000Z"
 //CreateCalendar Google-Calendar
 func CreateCalendar(responseWriter http.ResponseWriter, request *http.Request) {
 
-	var key = os.Getenv("KEY")
+	var key = os.Getenv("CREDENTIAL_JSON")
 
 	decodedJSON, err := base64.StdEncoding.DecodeString(key)
 	if err != nil {
@@ -79,7 +79,7 @@ func CreateCalendar(responseWriter http.ResponseWriter, request *http.Request) {
 //GetCalendarByID Google-Calendar
 func GetCalendarByID(responseWriter http.ResponseWriter, request *http.Request) {
 
-	var key = os.Getenv("KEY")
+	var key = os.Getenv("CREDENTIAL_JSON")
 
 	decodedJSON, err := base64.StdEncoding.DecodeString(key)
 	if err != nil {
@@ -121,7 +121,7 @@ func GetCalendarByID(responseWriter http.ResponseWriter, request *http.Request) 
 //EventList Google-Calendar
 func EventList(responseWriter http.ResponseWriter, request *http.Request) {
 
-	var key = os.Getenv("KEY")
+	var key = os.Getenv("CREDENTIAL_JSON")
 
 	decodedJSON, err := base64.StdEncoding.DecodeString(key)
 	if err != nil {
@@ -163,7 +163,7 @@ func EventList(responseWriter http.ResponseWriter, request *http.Request) {
 //CreateEvent Google-Calendar
 func CreateEvent(responseWriter http.ResponseWriter, request *http.Request) {
 
-	var key = os.Getenv("KEY")
+	var key = os.Getenv("CREDENTIAL_JSON")
 
 	decodedJSON, err := base64.StdEncoding.DecodeString(key)
 	if err != nil {
@@ -237,7 +237,7 @@ func CreateEvent(responseWriter http.ResponseWriter, request *http.Request) {
 //GetEventByID Google-Calendar
 func GetEventByID(responseWriter http.ResponseWriter, request *http.Request) {
 
-	var key = os.Getenv("KEY")
+	var key = os.Getenv("CREDENTIAL_JSON")
 
 	decodedJSON, err := base64.StdEncoding.DecodeString(key)
 	if err != nil {
